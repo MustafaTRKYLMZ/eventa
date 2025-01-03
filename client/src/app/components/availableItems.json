@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1",
+    "type": "seat",
+    "name": "VIP Seat",
+    "row": "A",
+    "position": 1,
+    "icon": "vip-seat",
+    "isAccessible": false,
+    "seatType": "vip"
+  }, {
+    "id": "3",
+    "type": "seat",
+    "name": "Standard Seat",
+    "row": "A",
+    "position": 3,
+    "icon": "standard-seat",
+    "isAccessible": false,
+    "seatType": "standard" 
+  },
+  {
+    "id": "4",
+    "type": "seat",
+    "name": "Accessible Seat",
+    "row": "B",
+    "position": 2,
+    "icon": "accessible-seat",
+    "isAccessible": true,
+    "seatType": "accessible" 
+  },
+  {
+    "id": "row-1",
+    "type": "row",
+    "name": "A",
+    "icon": "row"
+  },
+  {
+    "id": "control-booth",
+    "type": "control-booth",
+    "name": "Control Booth",
+    "row": "C",
+    "rowSpan": 2,
+    "icon": "control-booth",
+    "imageUrl": "https://images.unsplash.com/photo-1581092337094-e0f03471dd4b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+  },
+ 
+  {
+    "id": "5",
+    "type": "stage",
+    "name": "Stage",
+    "icon":"stage"
+  }
+]
