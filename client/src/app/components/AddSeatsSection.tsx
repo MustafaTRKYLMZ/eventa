@@ -46,7 +46,7 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
       }}
     >
       <h3 className="font-bold">{section.name}</h3>
-      <div className="mt-4 flex items-center gap-4">
+      <div className=" flex items-center gap-4">
         <select
           value={selectedSeatPackage}
           onChange={(e) => setSelectedSeatPackage(Number(e.target.value))}
@@ -82,9 +82,10 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
         </select>
         <button
           onClick={() => addSeatsToRow(section.id)}
-          className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="p-2  text-white  hover:bg-red-100 hover:shadow-lg transition-all duration-300"
           style={{
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+            background: "linear-gradient(135deg, #8b0000, #000000)",
+            cursor: "pointer",
           }}
         >
           Add Seats

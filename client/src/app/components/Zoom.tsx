@@ -14,7 +14,15 @@ export const Zoom: FC<ZoomProps> = ({ setScale }) => {
   };
 
   return (
-    <div className="space-x-2 flex items-end flex-col gap-2 justify-center p-4 rounded absolute bottom-0 right-0">
+    <div
+      className="space-x-2 flex items-end flex-col gap-2 justify-center rounded "
+      style={{
+        position: "fixed",
+        bottom: "10px", // Alt kenarda biraz boşluk bırakmak için
+        right: "10px", // Sağ kenarda biraz boşluk bırakmak için
+        zIndex: 1000, // Sabit konumlu öğenin üstte görünmesi için
+      }}
+    >
       <button
         onClick={handleZoomIn}
         style={{

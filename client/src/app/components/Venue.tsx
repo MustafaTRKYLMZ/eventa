@@ -1,7 +1,8 @@
 import { FC, JSX } from "react";
-import { ReactSortable, SortableEvent } from "react-sortablejs";
+import { ReactSortable } from "react-sortablejs";
 import { DraggableItem } from "./types";
 import { Section } from "./Section";
+import { generateLetters } from "../utils/generateLetters";
 
 export type VenueProps = {
   venueItems: DraggableItem[];
@@ -14,7 +15,6 @@ export type VenueProps = {
   setSelectedSeatPackage: React.Dispatch<React.SetStateAction<number>>;
   availableItems: DraggableItem[];
   handleSeatTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleItemDrop: (event: SortableEvent) => void;
   renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   updateRowState: (rowId: string, updatedState: Partial<DraggableItem>) => void;
   scale: number;
@@ -31,11 +31,16 @@ export const Venue: FC<VenueProps> = ({
   setSelectedSeatPackage,
   availableItems,
   handleSeatTypeChange,
-  handleItemDrop,
   renderIcon,
   updateRowState,
   scale,
 }) => {
+  const handleSetItems = (newItems: DraggableItem[]) => {
+    const updatedItems = generateLetters(newItems);
+
+    setVenueItems(updatedItems);
+  };
+
   return (
     <div
       className="container mx-auto flex flex-col p-6 rounded-lg"
@@ -49,7 +54,7 @@ export const Venue: FC<VenueProps> = ({
       <h2
         className="text-2xl font-bold mb-4"
         style={{
-          color: "#f56565",
+          color: "white",
           textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
           textAlign: "center",
         }}
@@ -58,24 +63,21 @@ export const Venue: FC<VenueProps> = ({
       </h2>
       <ReactSortable
         list={venueItems}
-        setList={setVenueItems}
+        setList={handleSetItems}
         group={{ name: "shared", pull: true, put: true }}
-        onEnd={handleItemDrop}
-        onStart={(event) => {
-          console.log("drag started", event);
-        }}
-        onMove={(event) => {
-          console.log("dragging", event);
-        }}
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          width: `${100 * scale}vh`,
-          overflow: "auto",
-          height: `${100 * scale}vh`,
-          transform: `scale(${scale})`,
-          transformOrigin: "center center",
+          width: "100%", // Genişliği responsive hale getiriyoruz
+          height: "auto", // Yükseklik dinamik olmalı
+          overflowY: "auto", // İçeriğin taşmasını engelliyoruz
+          minHeight: "80vh", // Minimum yükseklik ekranın %80'i
+          maxHeight: "100vh", // Maksimum yükseklik ekranın %100'ü
+          padding: "20px", // İçerik boşluğu
+          boxSizing: "border-box", // Box modelinde padding'i hesaba katar
+          transform: `scale(${scale})`, // Zoom işlemi için scale kullanıyoruz
+          transformOrigin: "center center", // Zoom odak noktasını ortada tutuyoruz
         }}
       >
         {venueItems.map((section) => (
@@ -85,7 +87,6 @@ export const Venue: FC<VenueProps> = ({
             section={section}
             removeItem={removeItem}
             updateRowItems={updateRowItems}
-            handleItemDrop={handleItemDrop}
             renderIcon={renderIcon}
             selectedSeatPackage={selectedSeatPackage}
             selectedSeatType={selectedSeatType}

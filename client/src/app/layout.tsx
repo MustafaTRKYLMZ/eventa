@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="display flex flex-col min-h-screen bg-gray-100 text-gray-800">
+      <body className="display flex flex-col min-h-screen ">
         <header className="bg-gray-800 text-white p-4">
           <nav className="container mx-auto flex justify-between items-center">
             <Link href="/" className="text-lg font-bold">
@@ -27,7 +27,7 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        <main className="container mx-auto p-4">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

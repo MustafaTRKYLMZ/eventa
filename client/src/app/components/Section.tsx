@@ -1,6 +1,6 @@
 import { FC, JSX, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { ReactSortable, SortableEvent } from "react-sortablejs";
+import { ReactSortable } from "react-sortablejs";
 import { AddSeatsSection } from "./AddSeatsSection";
 import ControlBoothSVG from "./Svgs/ControlBoothSVG";
 import StageSVG from "./Svgs/StageSVG";
@@ -11,7 +11,6 @@ export type SectionProps = {
   section: DraggableItem;
   removeItem: (id: string) => void;
   updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
-  handleItemDrop: (event: SortableEvent) => void;
   renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   selectedSeatPackage: number;
   selectedSeatType: DraggableItem | null;
@@ -26,7 +25,6 @@ export const Section: FC<SectionProps> = ({
   section,
   removeItem,
   updateRowItems,
-  handleItemDrop,
   renderIcon,
   availableItems,
   addSeatsToRow,
@@ -43,7 +41,7 @@ export const Section: FC<SectionProps> = ({
         background: "linear-gradient(135deg, #2b2b2b, #1e1e1e)",
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.6)",
         border: "1px solid rgba(255, 69, 0, 0.5)",
-        overflow: "auto",
+        // overflow: "auto",
       }}
     >
       {/* Stage or Row */}
@@ -57,7 +55,7 @@ export const Section: FC<SectionProps> = ({
             list={section.items || []}
             setList={(newItems) => updateRowItems(section.id, newItems)}
             group={{ name: "shared", pull: true, put: true }}
-            onEnd={handleItemDrop}
+            // onEnd={handleItemDrop}
             style={{
               display: "flex",
               flexWrap: "nowrap",
