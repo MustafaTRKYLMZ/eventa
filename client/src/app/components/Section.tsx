@@ -1,4 +1,4 @@
-import { FC, JSX } from "react";
+import { FC, JSX, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { ReactSortable, SortableEvent } from "react-sortablejs";
 import { AddSeatsSection } from "./AddSeatsSection";
@@ -32,19 +32,19 @@ export const Section: FC<SectionProps> = ({
   addSeatsToRow,
   updateRowState,
 }) => {
+  const [scale, setScale] = useState(1);
   return (
     <div
       key={section.id}
-      className="relative flex flex-col p-2"
+      className="relative flex flex-col "
       style={{
-        minHeight: "120px",
         width: "100%",
         borderRadius: "15px",
         background: "linear-gradient(135deg, #2b2b2b, #1e1e1e)",
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.6)",
         border: "1px solid rgba(255, 69, 0, 0.5)",
+        overflow: "auto",
       }}
-      data-id={section.id}
     >
       {/* Stage or Row */}
       {section?.type === "stage" ? (
@@ -61,8 +61,8 @@ export const Section: FC<SectionProps> = ({
             style={{
               display: "flex",
               flexWrap: "nowrap",
-              gap: "10px",
               borderRadius: "15px",
+              gap: "5px",
               background: "linear-gradient(135deg, #1a1a1a, #000000)",
               borderWidth: "5px",
               borderStyle: "solid",
@@ -71,9 +71,11 @@ export const Section: FC<SectionProps> = ({
               overflowX: "auto",
               boxShadow: "0 4px 15px rgba(255, 69, 0, 0.5)",
             }}
+            data-id={section.id}
           >
             {(section.items || []).map((seat) => (
               <Seat
+                scale={scale}
                 seat={seat}
                 key={seat.id}
                 updateRowItems={updateRowItems}
@@ -84,6 +86,7 @@ export const Section: FC<SectionProps> = ({
           </ReactSortable>
           {/* Add Seats Section */}
           <AddSeatsSection
+            setScale={setScale}
             section={section}
             selectedSeatPackage={section.selectedSeatPackage}
             selectedSeatType={section.selectedSeatType}
@@ -107,7 +110,7 @@ export const Section: FC<SectionProps> = ({
       ) : null}
       {/* Remove Section Button */}
       {section?.type !== "row" && (
-        <div className="dislay flex justify-end">
+        <div className="display flex justify-end gap-2">
           <button
             onClick={() => removeItem(section.id)}
             className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"

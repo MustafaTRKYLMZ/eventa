@@ -1,15 +1,17 @@
 import { FC, JSX } from "react";
-import { ReactSortable } from "react-sortablejs";
+import { ReactSortable, SortableEvent } from "react-sortablejs";
 import { v4 as uuidv4 } from "uuid";
 import { DraggableItem } from "./types";
 export type AvailableItemsProps = {
   availableItems: DraggableItem[];
   renderIcon: (iconKey: string | undefined) => JSX.Element | null;
+  handleItemDrop: (event: SortableEvent) => void;
 };
 
 export const AvailableItems: FC<AvailableItemsProps> = ({
   availableItems,
   renderIcon,
+  handleItemDrop,
 }) => {
   return (
     <div className="w-1/4 p-4 bg-gray-100 border-l">
@@ -20,6 +22,7 @@ export const AvailableItems: FC<AvailableItemsProps> = ({
           id: uuidv4(),
         }))}
         setList={() => {}}
+        onEnd={handleItemDrop}
         group={{ name: "shared", pull: "clone", put: false }}
         className="flex flex-wrap gap-2"
         style={{

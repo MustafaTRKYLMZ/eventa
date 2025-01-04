@@ -17,6 +17,7 @@ export type VenueProps = {
   handleItemDrop: (event: SortableEvent) => void;
   renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   updateRowState: (rowId: string, updatedState: Partial<DraggableItem>) => void;
+  scale: number;
 };
 
 export const Venue: FC<VenueProps> = ({
@@ -33,6 +34,7 @@ export const Venue: FC<VenueProps> = ({
   handleItemDrop,
   renderIcon,
   updateRowState,
+  scale,
 }) => {
   return (
     <div
@@ -69,14 +71,17 @@ export const Venue: FC<VenueProps> = ({
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          width: "100%",
+          width: `${100 * scale}vh`,
           overflow: "auto",
-          height: "calc(100vh - 20px)",
+          height: `${100 * scale}vh`,
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
         }}
       >
         {venueItems.map((section) => (
           <Section
             key={section.id}
+            data-id={section.id}
             section={section}
             removeItem={removeItem}
             updateRowItems={updateRowItems}

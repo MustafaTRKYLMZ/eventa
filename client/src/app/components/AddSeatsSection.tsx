@@ -11,6 +11,7 @@ export type AddSeatsSectionProps = {
   addSeatsToRow: (rowId: string) => void;
   section: DraggableItem;
   removeItem: (id: string) => void;
+  setScale: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
@@ -22,7 +23,15 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
   addSeatsToRow,
   removeItem,
   availableItems,
+  setScale,
 }) => {
+  const handleZoomIn = () => {
+    setScale((prev) => Math.max(prev - 0.1, 0.5));
+  };
+
+  const handleZoomOut = () => {
+    setScale((prev) => Math.min(prev + 0.1, 3));
+  };
   return (
     <div
       key={section.id}
@@ -81,12 +90,35 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
           Add Seats
         </button>
       </div>
-      <button
-        onClick={() => removeItem(section.id)}
-        className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500 hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-      >
-        <FaTrash />
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleZoomIn}
+          style={{
+            background: "linear-gradient(135deg, #8b0000, #000000)",
+            color: "white",
+          }}
+          className="bottom-0 right-0 p-1 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
+        >
+          -
+        </button>
+        <button
+          onClick={handleZoomOut}
+          style={{
+            background: "linear-gradient(135deg, #8b0000, #000000)",
+            color: "white",
+          }}
+          className="bottom-0 right-0 p-1 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
+        >
+          +
+        </button>
+
+        <button
+          onClick={() => removeItem(section.id)}
+          className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500 hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
+        >
+          <FaTrash />
+        </button>
+      </div>
     </div>
   );
 };

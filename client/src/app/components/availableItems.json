@@ -29,7 +29,7 @@
     "seatType": "accessible" 
   },
   {
-    "id": "row-1",
+    "id": "row",
     "type": "row",
     "name": "A",
     "icon": "row"

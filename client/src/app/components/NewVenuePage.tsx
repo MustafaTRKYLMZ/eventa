@@ -10,6 +10,7 @@ import { DraggableItem } from "./types";
 import { AvailableItems } from "./AvailableItems";
 import { Venue } from "./Venue";
 import ControlBoothSVG from "./Svgs/ControlBoothSVG";
+import { Zoom } from "./Zoom";
 
 export default function NewVenuePage() {
   const [hydrated, setHydrated] = useState(false);
@@ -27,15 +28,19 @@ export default function NewVenuePage() {
   const [selectedSeatPackage, setSelectedSeatPackage] = useState<number>(1);
   const [selectedSeatType, setSelectedSeatType] =
     useState<DraggableItem | null>(null);
-
+  const [scale, setScale] = useState(1);
   useEffect(() => {
     setHydrated(true);
   }, []);
 
   const updateRowItems = (rowId: string, newItems: DraggableItem[]) => {
-    setVenueItems((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, items: newItems } : row))
-    );
+    console.log("check", rowId, newItems);
+    setVenueItems((prev) => {
+      console.log("prev", prev);
+      return prev.map((row) =>
+        row.id !== rowId ? { ...row, items: newItems } : row
+      );
+    });
   };
 
   const removeItem = (id: string) => {
@@ -86,34 +91,60 @@ export default function NewVenuePage() {
   const handleItemDrop = (evt: SortableEvent) => {
     console.log("drag ended", evt);
     const { to, item } = evt;
-    console.log("to", to);
-    console.log("item", item);
-    const rowId = to.getAttribute("data-id");
-    const droppedItemId = item.getAttribute("data-id");
 
-    if (!rowId) {
-      console.error("No target rowId found.");
+    if (!to) {
+      console.error("No drop target found.");
       return;
     }
 
-    if (droppedItemId === "row") {
-      const existingRowNames = venueItems
-        .filter((row) => row.type === "row")
-        .map((row) => row.name);
-      console.log("existingRowNames", existingRowNames);
-      const newRowName = getNextRowName(existingRowNames);
-      console.log("newRowName", newRowName);
-      const newRow: DraggableItem = {
-        id: uuidv4(),
-        name: newRowName,
-        type: "row",
-        items: [],
-        selectedSeatPackage: 0,
-        selectedSeatType: null,
-      };
+    const rowId = to.getAttribute("data-id");
+    const droppedItemId = item.getAttribute("data-id");
 
-      setVenueItems((prev) => [...prev, newRow]);
-      return;
+    console.log("rowId", rowId);
+    console.log("droppedItemId", droppedItemId);
+
+    // Eğer düşürülen öğe "row" ise
+
+    if (droppedItemId === "row") {
+      // Only create a new row if rowId is empty
+      if (!rowId) {
+        console.log("Target rowId is missing; adding a new row.");
+        const existingRowNames = venueItems
+          .filter((row) => row.type === "row")
+          .map((row) => row.name);
+        console.log("existingRowNames", existingRowNames);
+
+        const newRowName = getNextRowName(existingRowNames);
+        console.log("newRowName", newRowName);
+
+        const newRow: DraggableItem = {
+          id: uuidv4(),
+          name: newRowName,
+          type: "row",
+          items: [],
+          selectedSeatPackage: 0,
+          selectedSeatType: null,
+        };
+        to.setAttribute("data-id", newRow.id);
+
+        setVenueItems((prev) => [...prev, newRow]);
+        console.log("Creating a new row:", newRow);
+      } else {
+        console.log("Row already exists; no need to create a new one.");
+        setVenueItems((prevItems) =>
+          prevItems.map((row) =>
+            row.id !== rowId
+              ? {
+                  ...row,
+                  items: row.items?.map((item, index) => ({
+                    ...item,
+                    seatNumber: `${row.name}-${index + 1}`,
+                  })),
+                }
+              : row
+          )
+        );
+      }
     }
 
     setVenueItems((prev) =>
@@ -129,6 +160,8 @@ export default function NewVenuePage() {
         };
       })
     );
+
+    console.log("Updated Venue Items:", venueItems);
   };
 
   const handleSeatTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -172,6 +205,7 @@ export default function NewVenuePage() {
     <div className="container mx-auto flex">
       {/* Venue Layout Section */}
       <Venue
+        scale={scale}
         handleItemDrop={handleItemDrop}
         removeItem={removeItem}
         updateRowItems={updateRowItems}
@@ -188,12 +222,13 @@ export default function NewVenuePage() {
       />
 
       {/* Available Items Section */}
-      {
-        <AvailableItems
-          availableItems={availableItems as DraggableItem[]}
-          renderIcon={renderIcon}
-        />
-      }
+
+      <AvailableItems
+        handleItemDrop={handleItemDrop}
+        availableItems={availableItems as DraggableItem[]}
+        renderIcon={renderIcon}
+      />
+      <Zoom setScale={setScale} />
     </div>
   );
 }
