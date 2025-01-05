@@ -6,6 +6,7 @@ import ControlBoothSVG from "./Svgs/ControlBoothSVG";
 import StageSVG from "./Svgs/StageSVG";
 import { DraggableItem } from "./types";
 import { Seat } from "./Seat";
+import StairsSVG from "./Svgs/StairsSVG";
 
 export type SectionProps = {
   section: DraggableItem;
@@ -39,7 +40,9 @@ export const Section: FC<SectionProps> = ({
         background: "linear-gradient(135deg, #2b2b2b, #1e1e1e)",
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.6)",
         border: "1px solid rgba(255, 69, 0, 0.5)",
-        // overflow: "auto",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       {/* Stage or Row */}
@@ -47,22 +50,20 @@ export const Section: FC<SectionProps> = ({
         <StageSVG />
       ) : section?.type === "control-booth" ? (
         <ControlBoothSVG />
+      ) : section?.type === "stairs" ? (
+        <StairsSVG />
       ) : section?.type === "row" ? (
-        <div>
+        <div className="flex flex-col  w-full">
           <ReactSortable
             list={section.items || []}
             setList={(newItems) => updateRowItems(section.id, newItems)}
             group={{ name: "shared", pull: true, put: true }}
-            // onEnd={handleItemDrop}
             style={{
               display: "flex",
               flexWrap: "nowrap",
               borderRadius: "15px",
               gap: "5px",
               background: "linear-gradient(135deg, #1a1a1a, #000000)",
-              borderWidth: "5px",
-              borderStyle: "solid",
-              borderColor: "#ff4500",
               minHeight: "80px",
               overflowX: "auto",
               boxShadow: "0 4px 15px rgba(255, 69, 0, 0.5)",
@@ -80,6 +81,7 @@ export const Section: FC<SectionProps> = ({
             ))}
           </ReactSortable>
           {/* Add Seats Section */}
+
           <AddSeatsSection
             setScale={setScale}
             section={section}
@@ -105,7 +107,7 @@ export const Section: FC<SectionProps> = ({
       ) : null}
       {/* Remove Section Button */}
       {section?.type !== "row" && (
-        <div className="display flex justify-end gap-2">
+        <div className="display flex justify-end gap-2 p-2 w-full">
           <button
             onClick={() => removeItem(section.id)}
             className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"

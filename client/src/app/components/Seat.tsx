@@ -20,7 +20,7 @@ export const Seat: FC<SeatProps> = ({
   return (
     <div
       key={seat.id}
-      className="flex items-center justify-between rounded"
+      className="flex items-center justify-between rounded p-2"
       style={{
         flexShrink: 0,
         background: "linear-gradient(135deg, #ff4500, #ff6347)",

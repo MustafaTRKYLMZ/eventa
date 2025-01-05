@@ -86,6 +86,7 @@ export const SeatSVG: FC<SeatProps> = ({ type, seatNumber }) => {
           textAnchor="middle"
           fill="#000"
           fontWeight="bold"
+          className="p-2"
         >
           {seatNumber}
         </text>

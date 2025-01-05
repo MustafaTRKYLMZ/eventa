@@ -6,6 +6,7 @@ export const RowSVG = () => {
       width="100%"
       height="50"
       fill="none"
+      className="p-2"
     >
       <rect width="300" height="50" fill="#f0f0f0" rx="8" />
       <line

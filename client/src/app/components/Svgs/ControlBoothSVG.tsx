@@ -7,6 +7,7 @@ const ControlBoothSVG: React.FC = () => {
       viewBox="0 0 100 50"
       width="100"
       height="50"
+      className="p-2 gap-2"
     >
       {/* Base Table */}
       <rect x="5" y="20" width="90" height="20" rx="2" fill="#9e9e9e" />
@@ -23,11 +24,6 @@ const ControlBoothSVG: React.FC = () => {
       <circle cx="55" cy="30" r="3" fill="#ff5722" />
       <circle cx="65" cy="30" r="3" fill="#9c27b0" />
       <circle cx="75" cy="30" r="3" fill="#00bcd4" />
-
-      {/* Labels */}
-      <text x="5" y="47" fontSize="5" fill="#000">
-        Control Booth
-      </text>
     </svg>
   );
 };

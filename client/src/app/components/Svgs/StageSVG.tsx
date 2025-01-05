@@ -5,7 +5,7 @@ const StageSVG: FC = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 300 100"
-      className="w-full h-32 mx-auto"
+      className="w-full  mx-auto p-2"
     >
       {/* Stage Background */}
       <rect
@@ -14,7 +14,7 @@ const StageSVG: FC = () => {
         width="300"
         height="40"
         rx="20"
-        fill="url(#stageGradient)"
+        fill="linear-gradient(135deg, #2b2b2b, #1e1e1e)"
         stroke="#FF4500"
         strokeWidth="2"
       />

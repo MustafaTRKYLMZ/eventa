@@ -18,9 +18,9 @@ export const Zoom: FC<ZoomProps> = ({ setScale }) => {
       className="space-x-2 flex items-end flex-col gap-2 justify-center rounded "
       style={{
         position: "fixed",
-        bottom: "10px", // Alt kenarda biraz boşluk bırakmak için
-        right: "10px", // Sağ kenarda biraz boşluk bırakmak için
-        zIndex: 1000, // Sabit konumlu öğenin üstte görünmesi için
+        bottom: "10px",
+        right: "10px",
+        zIndex: 1000,
       }}
     >
       <button

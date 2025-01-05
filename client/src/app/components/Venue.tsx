@@ -35,7 +35,6 @@ export const Venue: FC<VenueProps> = ({
 }) => {
   const handleSetItems = (newItems: DraggableItem[]) => {
     const updatedItems = generateLetters(newItems);
-
     setVenueItems(updatedItems);
   };
 
@@ -67,15 +66,15 @@ export const Venue: FC<VenueProps> = ({
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          width: "100%", // Genişliği responsive hale getiriyoruz
-          height: "auto", // Yükseklik dinamik olmalı
-          overflowY: "auto", // İçeriğin taşmasını engelliyoruz
-          minHeight: "80vh", // Minimum yükseklik ekranın %80'i
-          maxHeight: "100vh", // Maksimum yükseklik ekranın %100'ü
-          padding: "20px", // İçerik boşluğu
-          boxSizing: "border-box", // Box modelinde padding'i hesaba katar
-          transform: `scale(${scale})`, // Zoom işlemi için scale kullanıyoruz
-          transformOrigin: "center center", // Zoom odak noktasını ortada tutuyoruz
+          width: "100%",
+          height: "auto",
+          overflowY: "auto",
+          minHeight: "80vh",
+          maxHeight: "100vh",
+          padding: "20px",
+          boxSizing: "border-box",
+          transform: `scale(${scale})`,
+          transformOrigin: "center center",
         }}
       >
         {venueItems.map((section) => (
