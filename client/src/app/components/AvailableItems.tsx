@@ -1,16 +1,13 @@
-import { FC, JSX } from "react";
+import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { v4 as uuidv4 } from "uuid";
 import { DraggableItem } from "./types";
+import { renderIcon } from "../utils/renderIcon";
 export type AvailableItemsProps = {
   availableItems: DraggableItem[];
-  renderIcon: (iconKey: string | undefined) => JSX.Element | null;
 };
 
-export const AvailableItems: FC<AvailableItemsProps> = ({
-  availableItems,
-  renderIcon,
-}) => {
+export const AvailableItems: FC<AvailableItemsProps> = ({ availableItems }) => {
   return (
     <div
       className="w-full sm:w-1/4 p-4 border-l shadow-lg"

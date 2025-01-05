@@ -1,4 +1,4 @@
-import { FC, JSX, useState } from "react";
+import { FC, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { ReactSortable } from "react-sortablejs";
 import { AddSeatsSection } from "./AddSeatsSection";
@@ -11,7 +11,6 @@ export type SectionProps = {
   section: DraggableItem;
   removeItem: (id: string) => void;
   updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
-  renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   selectedSeatPackage: number;
   selectedSeatType: DraggableItem | null;
   setSelectedSeatPackage: React.Dispatch<React.SetStateAction<number>>;
@@ -25,7 +24,6 @@ export const Section: FC<SectionProps> = ({
   section,
   removeItem,
   updateRowItems,
-  renderIcon,
   availableItems,
   addSeatsToRow,
   updateRowState,
@@ -77,7 +75,6 @@ export const Section: FC<SectionProps> = ({
                 seat={seat}
                 key={seat.id}
                 updateRowItems={updateRowItems}
-                renderIcon={renderIcon}
                 section={section}
               />
             ))}

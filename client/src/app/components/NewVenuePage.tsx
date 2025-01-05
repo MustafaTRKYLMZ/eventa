@@ -1,14 +1,10 @@
 "use client";
-import { useState, useEffect, JSX } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import availableItems from "./availableItems.json";
-import { SeatSVG } from "./Svgs/SeatSVG";
-import StageSVG from "./Svgs/StageSVG";
-import { RowSVG } from "./Svgs/RowSVG";
 import { DraggableItem } from "./types";
 import { AvailableItems } from "./AvailableItems";
 import { Venue } from "./Venue";
-import ControlBoothSVG from "./Svgs/ControlBoothSVG";
 import { Zoom } from "./Zoom";
 
 export default function NewVenuePage() {
@@ -24,12 +20,22 @@ export default function NewVenuePage() {
   }, []);
 
   const updateRowItems = (rowId: string, newItems: DraggableItem[]) => {
-    console.log("check", rowId, newItems);
     setVenueItems((prev) => {
-      console.log("prev", prev);
-      return prev.map((row) =>
-        row.id === rowId ? { ...row, items: newItems } : row
-      );
+      return prev.map((row) => {
+        if (row.id === rowId) {
+          const updatedItems = newItems.map((item, index) => {
+            if (item.type === "seat") {
+              const seatNumber = `${row.name}-${index + 1}`;
+              return { ...item, seatNumber };
+            }
+
+            return item;
+          });
+
+          return { ...row, items: updatedItems };
+        }
+        return row;
+      });
     });
   };
 
@@ -60,7 +66,10 @@ export default function NewVenuePage() {
     setVenueItems((prev) =>
       prev.map((row) =>
         row.id === rowId
-          ? { ...row, items: [...(row.items || []), ...seatsToAdd] }
+          ? {
+              ...row,
+              items: [...(row.items || []), ...seatsToAdd],
+            }
           : row
       )
     );
@@ -166,18 +175,6 @@ export default function NewVenuePage() {
 
   if (!hydrated) return null;
 
-  const iconMap: { [key: string]: JSX.Element } = {
-    "standard-seat": <SeatSVG type="standard" />,
-    "vip-seat": <SeatSVG type="vip" />,
-    "accessible-seat": <SeatSVG type="accessible" />,
-    stage: <StageSVG />,
-    row: <RowSVG />,
-    "control-booth": <ControlBoothSVG />,
-  };
-
-  const renderIcon = (iconKey: string | undefined): JSX.Element => {
-    return iconKey ? iconMap[iconKey] : <div />;
-  };
   const updateRowState = (
     rowId: string,
     updatedState: Partial<DraggableItem>
@@ -202,17 +199,12 @@ export default function NewVenuePage() {
         handleSeatTypeChange={handleSeatTypeChange}
         venueItems={venueItems}
         setVenueItems={setVenueItems}
-        renderIcon={renderIcon}
         availableItems={availableItems as DraggableItem[]}
         updateRowState={updateRowState}
       />
-
       {/* Available Items Section */}
 
-      <AvailableItems
-        availableItems={availableItems as DraggableItem[]}
-        renderIcon={renderIcon}
-      />
+      <AvailableItems availableItems={availableItems as DraggableItem[]} />
       <Zoom setScale={setScale} />
     </div>
   );

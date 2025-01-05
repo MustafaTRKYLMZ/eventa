@@ -1,18 +1,17 @@
-import { JSX, FC } from "react";
+import { FC } from "react";
 import { FaTrash } from "react-icons/fa";
 import { DraggableItem } from "./types";
+import { renderIcon } from "../utils/renderIcon";
 
 export type SeatProps = {
   seat: DraggableItem;
   updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
-  renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   section: DraggableItem;
   scale?: number;
 };
 export const Seat: FC<SeatProps> = ({
   seat,
   updateRowItems,
-  renderIcon,
   section,
   scale = 1,
 }) => {

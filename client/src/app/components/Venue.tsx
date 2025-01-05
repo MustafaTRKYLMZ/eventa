@@ -1,4 +1,4 @@
-import { FC, JSX } from "react";
+import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { DraggableItem } from "./types";
 import { Section } from "./Section";
@@ -15,7 +15,6 @@ export type VenueProps = {
   setSelectedSeatPackage: React.Dispatch<React.SetStateAction<number>>;
   availableItems: DraggableItem[];
   handleSeatTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  renderIcon: (iconKey: string | undefined) => JSX.Element | null;
   updateRowState: (rowId: string, updatedState: Partial<DraggableItem>) => void;
   scale: number;
 };
@@ -31,7 +30,6 @@ export const Venue: FC<VenueProps> = ({
   setSelectedSeatPackage,
   availableItems,
   handleSeatTypeChange,
-  renderIcon,
   updateRowState,
   scale,
 }) => {
@@ -87,7 +85,6 @@ export const Venue: FC<VenueProps> = ({
             section={section}
             removeItem={removeItem}
             updateRowItems={updateRowItems}
-            renderIcon={renderIcon}
             selectedSeatPackage={selectedSeatPackage}
             selectedSeatType={selectedSeatType}
             setSelectedSeatPackage={setSelectedSeatPackage}
