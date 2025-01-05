@@ -1,33 +1,35 @@
 import { FC, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { ReactSortable } from "react-sortablejs";
-import { AddSeatsSection } from "./AddSeatsSection";
 import ControlBoothSVG from "./Svgs/ControlBoothSVG";
 import StageSVG from "./Svgs/StageSVG";
-import { DraggableItem } from "./types";
-import { Seat } from "./Seat";
+import { DraggableItem, Seat, Section } from "./types";
+import { SeatPage } from "./SeatPage";
 import StairsSVG from "./Svgs/StairsSVG";
+import { SectionFooter } from "./SectionFooter";
 
-export type SectionProps = {
-  section: DraggableItem;
+export type SectionPageProps = {
+  section: Section;
   removeItem: (id: string) => void;
-  updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
+  updateRowSeats: (rowId: string, newItems: Seat[]) => void;
   selectedSeatPackage: number;
   selectedSeatType: DraggableItem | null;
   setSelectedSeatPackage: React.Dispatch<React.SetStateAction<number>>;
   availableItems: DraggableItem[];
   handleSeatTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   addSeatsToRow: (rowId: string) => void;
-  updateRowState: (rowId: string, updatedState: Partial<DraggableItem>) => void;
+  updateRowState: (rowId: string, updatedState: Partial<Section>) => void;
+  countSeats: (sectionId: string) => number;
 };
 
-export const Section: FC<SectionProps> = ({
+export const SectionPage: FC<SectionPageProps> = ({
   section,
   removeItem,
-  updateRowItems,
+  updateRowSeats,
   availableItems,
   addSeatsToRow,
   updateRowState,
+  countSeats,
 }) => {
   const [scale, setScale] = useState(1);
   return (
@@ -55,8 +57,8 @@ export const Section: FC<SectionProps> = ({
       ) : section?.type === "row" ? (
         <div className="flex flex-col  w-full">
           <ReactSortable
-            list={section.items || []}
-            setList={(newItems) => updateRowItems(section.id, newItems)}
+            list={section.seats || []}
+            setList={(seats) => updateRowSeats(section.id, seats)}
             group={{ name: "shared", pull: true, put: true }}
             style={{
               display: "flex",
@@ -70,38 +72,25 @@ export const Section: FC<SectionProps> = ({
             }}
             data-id={section.id}
           >
-            {(section.items || []).map((seat) => (
-              <Seat
+            {(section.seats || []).map((seat) => (
+              <SeatPage
                 scale={scale}
                 seat={seat}
                 key={seat.id}
-                updateRowItems={updateRowItems}
+                updateRowSeats={updateRowSeats}
                 section={section}
               />
             ))}
           </ReactSortable>
-          {/* Add Seats Section */}
-
-          <AddSeatsSection
-            setScale={setScale}
+          {/* Section Footer */}
+          <SectionFooter
             section={section}
-            selectedSeatPackage={section.selectedSeatPackage}
-            selectedSeatType={section.selectedSeatType}
-            setSelectedSeatPackage={(value) =>
-              updateRowState(section.id, {
-                selectedSeatPackage: value as number,
-              })
-            }
-            handleSeatTypeChange={(e) =>
-              updateRowState(section.id, {
-                selectedSeatType: availableItems.find(
-                  (item) => item.id === e.target.value
-                ),
-              })
-            }
+            setScale={setScale}
+            updateRowState={updateRowState}
+            availableItems={availableItems}
             addSeatsToRow={addSeatsToRow}
             removeItem={removeItem}
-            availableItems={availableItems}
+            countSeats={countSeats}
           />
         </div>
       ) : null}

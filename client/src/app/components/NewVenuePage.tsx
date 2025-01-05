@@ -2,41 +2,56 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import availableItems from "../data/availableItems.json";
-import { DraggableItem } from "./types";
+import { DraggableItem, Seat, Section, Venue } from "./types";
 import { AvailableItems } from "./AvailableItems";
-import { Venue } from "./Venue";
+import { VenuePage } from "./VenuePage";
 import { Zoom } from "./Zoom";
 
 export default function NewVenuePage() {
   const [hydrated, setHydrated] = useState(false);
-  const [venueItems, setVenueItems] = useState<DraggableItem[]>([]);
+  const [venues, setVenues] = useState<Venue[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
 
   const [selectedSeatPackage, setSelectedSeatPackage] = useState<number>(1);
   const [selectedSeatType, setSelectedSeatType] =
     useState<DraggableItem | null>(null);
   const [scale, setScale] = useState(1);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   useEffect(() => {
     setHydrated(true);
   }, []);
 
-  const updateRowItems = (rowId: string, newItems: DraggableItem[]) => {
-    setVenueItems((prev) => {
+  useEffect(() => {
+    const newVenues = venues.map((venue) => {
+      return {
+        ...venue,
+        sections: sections,
+      };
+    });
+
+    setVenues(newVenues);
+  }, [sections]);
+
+  console.log("venues", venues);
+  const updateRowSeats = (rowId: string, newItems: Seat[]) => {
+    setSections((prev) => {
       return prev.map((row) => {
         if (row.id === rowId) {
           let seatIndex = 0;
 
-          const updatedItems = newItems.map((item) => {
-            if (item.type === "seat") {
+          const updatedSeats = newItems.map((section) => {
+            if (section.type === "seat") {
               const seatNumber = `${row.name}-${seatIndex + 1}`;
               seatIndex++;
 
-              return { ...item, seatNumber };
+              return { ...section, seatNumber };
             }
 
-            return item;
+            return section;
           });
 
-          return { ...row, items: updatedItems };
+          return { ...row, seats: updatedSeats };
         }
         return row;
       });
@@ -44,19 +59,19 @@ export default function NewVenuePage() {
   };
 
   const removeItem = (id: string) => {
-    setVenueItems((prev) => prev.filter((item) => item.id !== id));
+    setSections((prev) => prev.filter((item) => item.id !== id));
   };
-  const getSeatsCurrentIndex = (rowId: string) => {
-    const row = venueItems.find((row) => row.id === rowId);
-    if (!row) return 0;
-    const rowItems = row.items?.filter((item) => item.type === "seat");
-    if (!rowItems) return 0;
-    return rowItems.length;
+  const getSeatsCurrentIndex = (sectionId: string) => {
+    const section = sections.find((section) => section.id === sectionId);
+    if (!section) return 0;
+    const sectionSeats = section.seats?.filter((seat) => seat.type === "seat");
+    if (!sectionSeats) return 0;
+    return sectionSeats.length;
   };
 
   const addSeatsToRow = (rowId: string) => {
-    const rowIndex = venueItems.findIndex((row) => row.id === rowId);
-    const currentRow = venueItems[rowIndex];
+    const rowIndex = sections.findIndex((section) => section.id === rowId);
+    const currentRow = sections[rowIndex];
 
     if (!currentRow.selectedSeatType) return;
 
@@ -86,14 +101,14 @@ export default function NewVenuePage() {
         };
       });
 
-    setVenueItems((prev) =>
-      prev.map((row) =>
-        row.id === rowId
+    setSections((prev) =>
+      prev.map((section) =>
+        section.id === rowId
           ? {
-              ...row,
-              items: [...(row.items || []), ...seatsToAdd],
+              ...section,
+              seats: [...(section.seats || []), ...seatsToAdd],
             }
-          : row
+          : section
       )
     );
   };
@@ -117,32 +132,38 @@ export default function NewVenuePage() {
     rowId: string,
     updatedState: Partial<DraggableItem>
   ) => {
-    setVenueItems((prevItems) =>
+    setSections((prevItems) =>
       prevItems.map((row) =>
         row.id === rowId ? { ...row, ...updatedState } : row
       )
     );
   };
+
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   return (
     <div className=" flex w-full">
       {/* Venue Layout Section */}
-      <Venue
+      <VenuePage
         scale={scale}
         removeItem={removeItem}
-        updateRowItems={updateRowItems}
+        updateRowSeats={updateRowSeats}
         addSeatsToRow={addSeatsToRow}
         selectedSeatPackage={selectedSeatPackage}
         selectedSeatType={selectedSeatType}
         setSelectedSeatPackage={setSelectedSeatPackage}
         handleSeatTypeChange={handleSeatTypeChange}
-        venueItems={venueItems}
-        setVenueItems={setVenueItems}
+        sections={sections}
+        setSections={setSections}
         availableItems={availableItems as DraggableItem[]}
         updateRowState={updateRowState}
       />
       {/* Available Items Section */}
 
-      <AvailableItems availableItems={availableItems as DraggableItem[]} />
+      <AvailableItems
+        availableItems={availableItems as DraggableItem[]}
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />
       <Zoom setScale={setScale} />
     </div>
   );

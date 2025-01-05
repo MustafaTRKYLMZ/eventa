@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { DraggableItem } from "./types";
-import { FaTrash } from "react-icons/fa";
 
 export type AddSeatsSectionProps = {
   selectedSeatPackage: number;
@@ -21,31 +20,10 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
   setSelectedSeatPackage,
   handleSeatTypeChange,
   addSeatsToRow,
-  removeItem,
   availableItems,
-  setScale,
 }) => {
-  const handleZoomIn = () => {
-    setScale((prev) => Math.max(prev - 0.1, 0.5));
-  };
-
-  const handleZoomOut = () => {
-    setScale((prev) => Math.min(prev + 0.1, 3));
-  };
   return (
-    <div
-      key={section.id}
-      className="flex justify-between items-center border rounded shadow"
-      style={{
-        background: "linear-gradient(135deg, #8b0000, #000000)",
-        border: "2px solid #ff4500",
-        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.7)",
-        padding: "10px 20px",
-        borderRadius: "10px",
-        color: "white",
-      }}
-    >
-      <h3 className="font-bold">{section.name}</h3>
+    <div key={section.id}>
       <div className=" flex items-center gap-4">
         <select
           value={selectedSeatPackage}
@@ -56,10 +34,10 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
             boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <option value={1}>1 Seat</option>
-          <option value={5}>5 Seats</option>
-          <option value={10}>10 Seats</option>
-          <option value={20}>20 Seats</option>
+          <option value={1}>1 </option>
+          <option value={5}>5 </option>
+          <option value={10}>10 </option>
+          <option value={20}>20 </option>
         </select>
         <select
           value={selectedSeatType?.id || ""}
@@ -70,7 +48,7 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
             boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <option value="">Select Seat Type</option>
+          <option value=""> Seat Type</option>
           {availableItems.map(
             (item) =>
               item.type === "seat" && (
@@ -82,42 +60,17 @@ export const AddSeatsSection: FC<AddSeatsSectionProps> = ({
         </select>
         <button
           onClick={() => addSeatsToRow(section.id)}
-          className="p-2  text-white  hover:bg-red-100 hover:shadow-lg transition-all duration-300"
+          className="p-2  text-white  hover:bg-red-100 hover:shadow-lg transition-all duration-300 "
           style={{
             background: "linear-gradient(135deg, #8b0000, #000000)",
             cursor: "pointer",
           }}
         >
-          Add Seats
-        </button>
-      </div>
-      <div className="flex items-center gap-2">
-        <button
-          onClick={handleZoomIn}
-          style={{
-            background: "linear-gradient(135deg, #8b0000, #000000)",
-            color: "white",
-          }}
-          className="bottom-0 right-0 p-1 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-        >
-          -
-        </button>
-        <button
-          onClick={handleZoomOut}
-          style={{
-            background: "linear-gradient(135deg, #8b0000, #000000)",
-            color: "white",
-          }}
-          className="bottom-0 right-0 p-1 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-        >
-          +
-        </button>
+          {/* Mobile: Icon */}
+          <span className="block md:hidden">+</span>
 
-        <button
-          onClick={() => removeItem(section.id)}
-          className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500 hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-        >
-          <FaTrash />
+          {/* Desktop: Add Seats Text */}
+          <span className="hidden md:block">Add Seats</span>
         </button>
       </div>
     </div>

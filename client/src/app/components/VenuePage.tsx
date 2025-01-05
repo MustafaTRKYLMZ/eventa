@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { DraggableItem } from "./types";
-import { Section } from "./Section";
+import { DraggableItem, Seat, Section } from "./types";
+import { SectionPage } from "./SectionPage";
 import { generateLetters } from "../utils/generateLetters";
 
-export type VenueProps = {
-  venueItems: DraggableItem[];
-  setVenueItems: React.Dispatch<React.SetStateAction<DraggableItem[]>>;
+export type VenuePageProps = {
+  sections: Section[];
+  setSections: React.Dispatch<React.SetStateAction<Section[]>>;
   removeItem: (id: string) => void;
-  updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
+  updateRowSeats: (rowId: string, newItems: Seat[]) => void;
   addSeatsToRow: (rowId: string) => void;
   selectedSeatPackage: number;
   selectedSeatType: DraggableItem | null;
@@ -19,11 +19,11 @@ export type VenueProps = {
   scale: number;
 };
 
-export const Venue: FC<VenueProps> = ({
-  venueItems,
-  setVenueItems,
+export const VenuePage: FC<VenuePageProps> = ({
+  sections,
+  setSections,
   removeItem,
-  updateRowItems,
+  updateRowSeats,
   addSeatsToRow,
   selectedSeatPackage,
   selectedSeatType,
@@ -33,19 +33,34 @@ export const Venue: FC<VenueProps> = ({
   updateRowState,
   scale,
 }) => {
-  const handleSetItems = (newItems: DraggableItem[]) => {
+  const handleSetItems = (newItems: Section[]) => {
     const updatedItems = generateLetters(newItems);
-    setVenueItems(updatedItems);
+    setSections(updatedItems);
   };
-
+  const countSeats = (sectionId: string) => {
+    let countSeats = 0;
+    sections
+      .filter((section) => section.id === sectionId)
+      .map((section) => {
+        if (section.type === "row") {
+          section.seats?.map((seat) => {
+            if (seat.type === "seat") {
+              countSeats++;
+            }
+          });
+        }
+      }, []);
+    return countSeats;
+  };
   return (
     <div
-      className="container mx-auto flex flex-col p-6 rounded-lg"
+      className="container mx-auto flex flex-col  p-2"
       style={{
         background: "linear-gradient(135deg, #1a202c, #2d3748)",
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
         minHeight: "100vh",
         color: "#f7fafc",
+        width: "80%",
       }}
     >
       <h2
@@ -58,8 +73,9 @@ export const Venue: FC<VenueProps> = ({
       >
         Venue Layout
       </h2>
+
       <ReactSortable
-        list={venueItems}
+        list={sections}
         setList={handleSetItems}
         group={{ name: "shared", pull: true, put: true }}
         style={{
@@ -71,19 +87,20 @@ export const Venue: FC<VenueProps> = ({
           overflowY: "auto",
           minHeight: "80vh",
           maxHeight: "100vh",
-          padding: "20px",
+          padding: "10px",
           boxSizing: "border-box",
           transform: `scale(${scale})`,
           transformOrigin: "center center",
         }}
       >
-        {venueItems.map((section) => (
-          <Section
+        {sections.map((section) => (
+          <SectionPage
             key={section.id}
             data-id={section.id}
             section={section}
             removeItem={removeItem}
-            updateRowItems={updateRowItems}
+            updateRowSeats={updateRowSeats}
+            countSeats={countSeats}
             selectedSeatPackage={selectedSeatPackage}
             selectedSeatType={selectedSeatType}
             setSelectedSeatPackage={setSelectedSeatPackage}

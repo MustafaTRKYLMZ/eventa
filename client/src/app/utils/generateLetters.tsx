@@ -1,9 +1,9 @@
-import { DraggableItem } from "../components/types";
+import { Section } from "../components/types";
 
-export const generateLetters = (newItems: DraggableItem[]) => {
+export const generateLetters = (newItems: Section[]) => {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const usedLetters = newItems
-    .filter((item) => item?.type === "row" && item.name.includes("("))
+    .filter((section) => section?.type === "row" && section.name.includes("("))
     .map((item) => {
       const match = item.name.match(/\((.*?)\)/);
       return match ? match[1] : null;

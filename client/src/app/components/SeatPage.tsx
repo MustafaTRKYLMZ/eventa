@@ -1,17 +1,17 @@
 import { FC } from "react";
 import { FaTrash } from "react-icons/fa";
-import { DraggableItem } from "./types";
+import { Seat, Section } from "./types";
 import { renderIcon } from "../utils/renderIcon";
 
 export type SeatProps = {
-  seat: DraggableItem;
-  updateRowItems: (rowId: string, newItems: DraggableItem[]) => void;
-  section: DraggableItem;
+  seat: Seat;
+  updateRowSeats: (rowId: string, newItems: Seat[]) => void;
+  section: Section;
   scale?: number;
 };
-export const Seat: FC<SeatProps> = ({
+export const SeatPage: FC<SeatProps> = ({
   seat,
-  updateRowItems,
+  updateRowSeats,
   section,
   scale = 1,
 }) => {
@@ -52,9 +52,9 @@ export const Seat: FC<SeatProps> = ({
             fontSize: `${scaledSize(12)}px`,
           }}
           onClick={() =>
-            updateRowItems(
+            updateRowSeats(
               section.id,
-              (section.items || []).filter((item) => item.id !== seat.id)
+              (section.seats || []).filter((item) => item.id !== seat.id)
             )
           }
         >
