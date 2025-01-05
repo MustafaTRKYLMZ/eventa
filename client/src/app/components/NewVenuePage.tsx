@@ -6,6 +6,7 @@ import { DraggableItem, Seat, Section, Venue } from "./types";
 import { AvailableItems } from "./AvailableItems";
 import { VenuePage } from "./VenuePage";
 import { Zoom } from "./Zoom";
+import { ReactSortable } from "react-sortablejs";
 
 export default function NewVenuePage() {
   const [hydrated, setHydrated] = useState(false);
@@ -17,7 +18,7 @@ export default function NewVenuePage() {
     useState<DraggableItem | null>(null);
   const [scale, setScale] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const [wrap, setWrap] = useState<DraggableItem[]>([]);
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -140,23 +141,58 @@ export default function NewVenuePage() {
   };
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+
+  console.log("wrap", wrap);
   return (
     <div className=" flex w-full">
       {/* Venue Layout Section */}
-      <VenuePage
-        scale={scale}
-        removeItem={removeItem}
-        updateRowSeats={updateRowSeats}
-        addSeatsToRow={addSeatsToRow}
-        selectedSeatPackage={selectedSeatPackage}
-        selectedSeatType={selectedSeatType}
-        setSelectedSeatPackage={setSelectedSeatPackage}
-        handleSeatTypeChange={handleSeatTypeChange}
-        sections={sections}
-        setSections={setSections}
-        availableItems={availableItems as DraggableItem[]}
-        updateRowState={updateRowState}
-      />
+      <ReactSortable
+        list={wrap}
+        setList={setWrap}
+        group={{ name: "shared", pull: true, put: true }}
+        className="flex-1 min-h-screen bg-gray-900 p-4"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          className="relative w-full h-full"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            transition: "transform 0.2s ease-in-out",
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-4"
+            style={{
+              color: "white",
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+              textAlign: "center",
+            }}
+          >
+            Venue Layout
+          </h2>
+          <VenuePage
+            scale={scale}
+            removeItem={removeItem}
+            updateRowSeats={updateRowSeats}
+            addSeatsToRow={addSeatsToRow}
+            selectedSeatPackage={selectedSeatPackage}
+            selectedSeatType={selectedSeatType}
+            setSelectedSeatPackage={setSelectedSeatPackage}
+            handleSeatTypeChange={handleSeatTypeChange}
+            sections={sections}
+            setSections={setSections}
+            availableItems={availableItems as DraggableItem[]}
+            updateRowState={updateRowState}
+          />
+          {wrap.map((item) => (
+            <div key={item.id}>{item.name}</div>
+          ))}
+        </div>
+      </ReactSortable>
       {/* Available Items Section */}
 
       <AvailableItems

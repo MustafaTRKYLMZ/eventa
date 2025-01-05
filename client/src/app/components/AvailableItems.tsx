@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { v4 as uuidv4 } from "uuid";

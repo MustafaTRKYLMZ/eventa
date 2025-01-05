@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { DraggableItem, Seat, Section } from "./types";
@@ -63,17 +64,6 @@ export const VenuePage: FC<VenuePageProps> = ({
         width: "80%",
       }}
     >
-      <h2
-        className="text-2xl font-bold mb-4"
-        style={{
-          color: "white",
-          textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
-          textAlign: "center",
-        }}
-      >
-        Venue Layout
-      </h2>
-
       <ReactSortable
         list={sections}
         setList={handleSetItems}
