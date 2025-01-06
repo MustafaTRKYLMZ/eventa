@@ -43,7 +43,21 @@ export const SectionPage: FC<SectionPageProps> = ({
   let sectionContent = null;
   switch (section?.type) {
     case "stage":
-      sectionContent = <StageSVG />;
+      sectionContent = (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            maxHeight: "300px",
+            maxWidth: "100%",
+            overflow: "hidden",
+          }}
+        >
+          <StageSVG />
+        </div>
+      );
       break;
     case "control-booth":
       sectionContent = <ControlBoothSVG />;
@@ -107,16 +121,15 @@ export const SectionPage: FC<SectionPageProps> = ({
       );
       break;
   }
+
   return (
     <div
       key={section.id}
-      className="relative flex flex-col "
+      className="relative flex flex-col h-full"
       style={{
         width: "100%",
         borderRadius: "15px",
-        background: "linear-gradient(135deg, #2b2b2b, #1e1e1e)",
         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.6)",
-        border: "1px solid rgba(255, 69, 0, 0.5)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -127,10 +140,7 @@ export const SectionPage: FC<SectionPageProps> = ({
       {/* Remove Section Button */}
       {section?.type !== "row" && (
         <div className="display flex justify-end gap-2 p-2 w-full">
-          <button
-            onClick={() => removeItem(section.id)}
-            className="bottom-0 right-0 p-2 rounded-full bg-gradient-to-br bg-red-500  hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-          >
+          <button onClick={() => removeItem(section.id)} className="remove-btn">
             <FaTrash />
           </button>
         </div>

@@ -71,7 +71,7 @@ export const VenuePage: FC<VenuePageProps> = ({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "20px",
+          gap: "5px",
           width: "100%",
           height: "auto",
           overflowY: "auto",

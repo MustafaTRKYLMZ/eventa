@@ -98,10 +98,8 @@ export const SectionFooter: FC<SectionFooterProps> = ({
         >
           +
         </button>
-        <button
-          onClick={() => removeItem(section.id)}
-          className="p-2 text-xs sm:text-sm rounded-full bg-gradient-to-br bg-red-500 hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
-        >
+
+        <button onClick={() => removeItem(section.id)} className="remove-btn">
           <FaTrash />
         </button>
       </div>

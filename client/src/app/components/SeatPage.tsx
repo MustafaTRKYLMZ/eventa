@@ -20,14 +20,13 @@ export const SeatPage: FC<SeatProps> = ({
   return (
     <div
       key={seat.id}
-      className="flex items-center justify-between rounded p-2"
+      className="flex flex-col items-center justify-between rounded p-2"
       style={{
         flexShrink: 0,
-        background: "linear-gradient(135deg, #ff4500, #ff6347)",
+        background: "transparent",
         color: "#fff",
         fontWeight: "600",
         fontSize: `${scaledSize(14)}px`,
-        border: `${2 * scale}px solid rgba(255, 255, 255, 0.8)`,
         borderRadius: `${scaledSize(10)}px`,
         boxShadow: `0 ${scaledSize(3)}px ${scaledSize(8)}px rgba(0, 0, 0, 0.3)`,
         height: `${scaledSize(80)}px`,
@@ -41,15 +40,26 @@ export const SeatPage: FC<SeatProps> = ({
           marginRight: scaledSize(2),
         }}
       >
-        {seat.icon && renderIcon(seat.icon)} {seat.seatNumber}
+        {seat.icon && renderIcon(seat.icon)}
       </span>
-      <div className="display flex justify-end gap-2" style={{}}>
+
+      <div className="display flex flex-row justify-end gap-2 w-full mt-auto">
+        <span
+          className="mr-2"
+          style={{
+            marginRight: scaledSize(2),
+          }}
+        >
+          {seat.seatNumber}
+        </span>
         <button
-          className="p-1 rounded-full bg-gradient-to-br bg-red-500 hover:bg-red-800 text-white shadow-lg border-2 border-white cursor-pointer transition-transform transform hover:scale-105"
+          className="remove-btn"
           style={{
             padding: scaledSize(4),
-            borderWidth: `${2 * scale}px`,
+            borderWidth: "0",
             fontSize: `${scaledSize(12)}px`,
+            outline: "none",
+            boxShadow: "none",
           }}
           onClick={() =>
             updateRowSeats(
