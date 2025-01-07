@@ -1,0 +1,112 @@
+[
+  {
+    "id": "sec1",
+    "sectionType": "up", 
+    "xOffset": 0,
+    "yOffset": -150,
+    "radius": 100,
+    "rows": ["r1", "r2"],
+    "floorId": "f1"
+  },
+  {
+    "id": "sec2",
+    "sectionType": "right",
+    "xOffset": 250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r3", "r4"],
+    "floorId":"f1"
+  },
+  {
+    "id": "sec3",
+    "sectionType": "down",
+    "xOffset": 0,
+    "yOffset": 150,
+    "radius": 100,
+    "rows": ["r5", "r6"],
+    "floorId": "f1"
+  },
+  {
+    "id": "sec4",
+    "sectionType": "left",
+    "xOffset": -250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r7", "r8"],
+    "floorId": "f1"
+    },
+    {
+    "id": "sec5",
+    "sectionType": "up",
+    "xOffset": 0,
+    "yOffset": -150,
+    "radius": 100,
+    "rows": ["r9", "r10"],
+    "floorId": "f2"
+    },
+    {
+    "id": "sec6",
+    "sectionType": "right",
+    "xOffset": 250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r11", "r12"],
+    "floorId": "f2"
+    },
+    {
+    "id": "sec7",
+    "sectionType": "down",
+    "xOffset": 0,
+    "yOffset": 150,
+    "radius": 100,
+    "rows": ["r13", "r14"],
+    "floorId": "f2"
+    },
+    {
+    "id": "sec8",
+    "sectionType": "left",
+    "xOffset": -250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r15", "r16"],
+    "floorId": "f2"
+    },
+   
+    {
+    "id": "sec9",
+    "sectionType": "up",
+    "xOffset": 0,
+    "yOffset": -150,
+    "radius": 100,
+    "rows": ["r17", "r18"],
+    "floorId": "f3"
+    }   ,
+    {
+    "id": "sec10",
+    "sectionType": "right",
+    "xOffset": 250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r19", "r20"],
+    "floorId": "f3"
+    },
+    
+    {
+    "id": "sec11",
+    "sectionType": "down",
+    "xOffset": 0,
+    "yOffset": 150,
+    "radius": 100,
+    "rows": ["r21", "r22"],
+    "floorId": "f3"
+    },
+    {
+    "id": "sec12",
+    "sectionType": "left",
+    "xOffset": -250,
+    "yOffset": 0,
+    "radius": 100,
+    "rows": ["r23", "r24"],
+    "floorId": "f3"
+    }
+]

@@ -2,51 +2,82 @@
 
 import React, { useEffect, useState } from "react";
 
-const TheaterSeating: React.FC = () => {
+export type Seat = {
+  seatIndex: number;
+  x: number;
+  y: number;
+  angle: number;
+  radius: number;
+};
+
+const TheaterSeating = () => {
   const [numSeatsPerRow] = useState(10); // Her sıradaki koltuk sayısı
   const [firstRowRadius] = useState(200); // Birinci sıradaki koltukların r değeri
   const [secondRowRadius] = useState(250); // İkinci sıradaki koltukların r değeri
   const [centerX, setCenterX] = useState(window.innerWidth / 2); // Ekranın merkezi X
   const [centerY, setCenterY] = useState(window.innerHeight / 2); // Ekranın merkezi Y
 
-  // Koltukları hesaplamak
-  const seats = [];
-
-  // Birinci sıradaki koltuklar
-  for (let i = 0; i < numSeatsPerRow; i++) {
+  const calculateCoordinates = (
+    i: number,
+    numSeatsPerRow: number,
+    radius: number,
+    centerX: number,
+    centerY: number
+  ) => {
     // 0° ile +180° arasında açı dağıtıyoruz
     const angle = (i * 180) / (numSeatsPerRow - 1); // Koltukları eşit aralıklarla dağıtıyoruz
     const pAngle = (angle * Math.PI) / 180; // Radyan cinsine çeviriyoruz
 
-    const pX = centerX + firstRowRadius * Math.cos(pAngle); // Polar X koordinatını hesapla
-    const pY = centerY + firstRowRadius * Math.sin(pAngle); // Polar Y koordinatını hesapla
+    const pX = centerX + radius * Math.cos(pAngle); // Polar X koordinatını hesapla
+    const pY = centerY + radius * Math.sin(pAngle); // Polar Y koordinatını hesapla
+    return { x: pX, y: pY, angle }; // Polar Y koordinatını hesapla
+  };
 
-    seats.push({
-      seatIndex: i,
-      x: pX,
-      y: pY,
-      angle: angle, // Koltuğun açısını da saklıyoruz
-      radius: firstRowRadius, // Bu sıradaki koltuklar için r değeri
-    });
-  }
+  const getSeatsCoordinates = (
+    numSeatsPerRow: number,
+    radius: number,
+    centerX: number,
+    centerY: number,
+    startIndex: number
+  ) => {
+    const seats = [];
+    for (let i = 0; i < numSeatsPerRow; i++) {
+      // 0° ile +180° arasında açı dağıtıyoruz
+      const { x, y, angle } = calculateCoordinates(
+        i,
+        numSeatsPerRow,
+        radius,
+        centerX,
+        centerY
+      );
+      seats.push({
+        seatIndex: startIndex + i, // Koltuğun numarasını doğru şekilde başlatıyoruz
+        x,
+        y,
+        angle, // Koltuğun açısını da saklıyoruz
+        radius, // Bu sıradaki koltuklar için r değeri
+      });
+    }
+    return seats;
+  };
 
-  // İkinci sıradaki koltuklar
-  for (let i = 0; i < numSeatsPerRow; i++) {
-    // 0° ile +180° arasında açı dağıtıyoruz
-    const angle = (i * 180) / (numSeatsPerRow - 1); // Koltukları eşit aralıklarla dağıtıyoruz
-    const pAngle = (angle * Math.PI) / 180; // Radyan cinsine çeviriyoruz
+  // Koltukları sırayla ekliyoruz
+  const firstRowSeats = getSeatsCoordinates(
+    numSeatsPerRow,
+    firstRowRadius,
+    centerX,
+    centerY,
+    0
+  ); // İlk sıradaki koltuklar
+  const secondRowSeats = getSeatsCoordinates(
+    numSeatsPerRow,
+    secondRowRadius,
+    centerX,
+    centerY,
+    firstRowSeats.length
+  ); // İkinci sıradaki koltuklar
 
-    const pX = centerX + secondRowRadius * Math.cos(pAngle); // Polar X koordinatını hesapla
-    const pY = centerY + secondRowRadius * Math.sin(pAngle); // Polar Y koordinatını hesapla
-
-    seats.push({
-      seatIndex: i + numSeatsPerRow,
-      x: pX,
-      y: pY,
-      angle: angle, // Koltuğun açısını da saklıyoruz
-      radius: secondRowRadius, // Bu sıradaki koltuklar için r değeri
-    });
-  }
+  const allSeats = [...firstRowSeats, ...secondRowSeats]; // Koltukları birleştiriyoruz
 
   useEffect(() => {
     const updateCenter = () => {
@@ -65,20 +96,21 @@ const TheaterSeating: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          left: `${centerX - 25}px`, // Sahnenin merkezi X
-          top: `${centerY - 25}px`, // Sahnenin merkezi Y
-          width: "50px",
-          height: "50px",
+          left: `${centerX - 100}px`, // Sahnenin merkezi X
+          top: `${centerY - 50}px`, // Sahnenin merkezi Y
+          width: "200px",
+          height: "100px",
           backgroundColor: "red",
-          borderRadius: "50%",
+          borderRadius: "20%",
         }}
       >
         Center (Sahne)
       </div>
 
-      {seats.map((seat) => (
+      {/* Koltukları Render Et */}
+      {allSeats.map((seat) => (
         <div
-          key={seat.seatIndex}
+          key={seat.seatIndex} // Koltukların benzersiz key'leri
           style={{
             position: "absolute",
             left: `${seat.x - 15}px`, // Koltuğun X koordinatını yerleştir
@@ -93,7 +125,7 @@ const TheaterSeating: React.FC = () => {
             fontSize: "14px",
           }}
         >
-          {seat.seatIndex + 1}
+          {seat.seatIndex + 1} {/* Koltuğun numarasını doğru şekilde göster */}
         </div>
       ))}
     </div>

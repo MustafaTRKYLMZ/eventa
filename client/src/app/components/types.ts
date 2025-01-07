@@ -1,3 +1,5 @@
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
+
 export type DraggableItem = {
   id: string;
   type: string;
@@ -14,10 +16,53 @@ export type DraggableItem = {
 export type Seat = {
   id: string;
   name: string;
-  seatNumber: string;
+  seatNumber: number;
   seatType: "standard" | "vip" | "accessible";
   icon: string;
   type: string;
+  x: number;
+  y: number;
+  xOffset: number;
+  yOffset: number;
+  seatRadius: number;
+  seatAngle: number;
+  seatAngleOffset: number;
+  seatAngleOffsetX: number;
+  seatAngleOffsetY: number;
+  seatAngleOffsetZ: number;
+  seatAngleOffsetW: number;
+  seatCenter: { x: number; y: number };
+  radius: number;
+  angle: number;
+  angleOffset: number;
+  angleOffsetX: number;
+  angleOffsetY: number;
+  isSold: boolean;
+  selectedSeatType: DraggableItem | null;
+  selectedSeatPackage: number;
+  rowId: string;
+};
+export type Row = {
+  id: string;
+  name: string;
+  seats: Seat[];
+  selectedSeatType: DraggableItem | null;
+  selectedSeatPackage: number;
+  xOffset: number;
+  yOffset: number;
+  width: number;
+  height: number;
+  rows: Row[];
+  sectionType: "up" | "right" | "down" | "left";
+  seatType: "standard" | "vip" | "accessible";
+  radius: number;
+  angle: number;
+  angleOffset: number;
+  angleOffsetX: number;
+  angleOffsetY: number;
+  center: { x: number; y: number };
+  seatsPerRow: number;
+  seatRadius: number;
 };
 export type Section = {
   id: string;
@@ -26,9 +71,51 @@ export type Section = {
   type: string;
   selectedSeatPackage: number;
   selectedSeatType: DraggableItem | null;
+  floorId: string;
+  xOffset: number;
+  yOffset: number;
+  width: number;
+  height: number;
+  rows: Row[];
+  sectionType: "up" | "right" | "down" | "left";
+  seatType: "standard" | "vip" | "accessible";
+  radius: number;
+  angle: number;
+  angleOffset: number;
+  angleOffsetX: number;
+  angleOffsetY: number;
+  center: { x: number; y: number };
+  seatsPerRow: number;
+  seatRadius: number;
+};
+export type Floor = {
+  id: string;
+  name: string;
+  sections: Section[];
 };
 export type Venue = {
   id: string;
   name: string;
   sections: Section[];
+  floors: Floor[];
+};
+export type Stage = {
+  id: string;
+  name: string;
+  centerX: number;
+  centerY: number;
+  stageRadius: number;
+  stageWidth: number;
+  stageHeight: number;
+  stageAngle: number;
+  stageColor: string;
+  stageRotation?: number;
+  stageOpacity?: number;
+  stageXOffset?: number;
+  stageYOffset?: number;
+  stageAngleOffset?: number;
+  stageAngleOffsetX?: number;
+  stageAngleOffsetY?: number;
+  stageAngleOffsetZ?: number;
+  stageAngleOffsetW?: number;
 };

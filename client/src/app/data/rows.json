@@ -1,0 +1,62 @@
+[
+  {
+    "id": "r1",
+    "section_id": "sec1",
+    "seats": ["s1", "s2", "s3"]
+  },
+  {
+    "id": "r2",
+    "section_id": "sec1",
+    "seats": ["s4", "s5", "s6"]
+  },
+  {
+    "id": "r3",
+    "section_id": "sec2",
+    "seats": ["s7", "s8", "s9"]
+  },
+  {
+    "id": "r4",
+    "section_id": "sec2",
+    "seats": ["s10", "s11", "s12"]
+  },
+  {
+    "id": "r5",
+    "section_id": "sec3",
+    "seats": ["s13", "s14", "s15"]
+  },
+  {
+    "id": "r6",
+    "section_id": "sec3",
+    "seats": ["s16", "s17", "s18"]
+  },
+  {
+    "id": "r7",
+    "section_id": "sec4",
+    "seats": ["s19", "s20", "s21"]
+  },
+  {
+    "id": "r8",
+    "section_id": "sec4",
+    "seats": ["s22", "s23", "s24"]
+  },
+  {
+    "id": "r9",
+    "section_id": "sec5",
+    "seats": ["s25", "s26", "s27"]
+  },
+  {
+    "id": "r10",
+    "section_id": "sec5",
+    "seats": ["s28", "s29", "s30"]
+  },
+  {
+    "id": "r11",
+    "section_id": "sec6",
+    "seats": ["s31", "s32", "s33"]
+  },
+  {
+    "id": "r12",
+    "section_id": "sec6",
+    "seats": ["s34", "s35", "s36"]
+  }
+]
