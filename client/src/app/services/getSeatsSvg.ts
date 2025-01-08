@@ -1,23 +1,25 @@
 "use client";
 import * as d3 from "d3";
-import { Row, Section, Venue } from "./types";
+import { Row, Seat, Section, Venue } from "../components/types";
+import { createSvg } from "./createSvg";
 
-export const getVenueSvg = (
+export const getSeatsSvg = (
   svg: d3.Selection<SVGSVGElement, unknown, null, undefined>,
   section: Section,
-  row: Row,
+  seats: Seat[],
   centerX: number,
   centerY: number,
   setVenueData: (data: Venue) => void
 ) => {
   const group = svg.append("g");
 
-  row.seats.forEach((seat) => {
+  seats.forEach((seat) => {
+    const { seatNumber, radius, color } = seat;
     const angleInRadians = (seat.angle * Math.PI) / 180;
 
     // Koltuğun pozisyonu
-    const x = centerX + seat.radius * Math.cos(angleInRadians);
-    const y = centerY + seat.radius * Math.sin(angleInRadians);
+    const x = centerX + radius * Math.cos(angleInRadians);
+    const y = centerY + radius * Math.sin(angleInRadians);
 
     // Koltuk (çember)
     const seatGroup = group
@@ -47,10 +49,9 @@ export const getVenueSvg = (
             d3.select(this).attr("transform", `translate(${newX}, ${newY})`);
 
             // Drag sırasında radius'u güncelle
-            d3.select(this).attr("radius", newRadius);
+            //   d3.select(this).attr("radius", newRadius);
           })
           .on("end", function (event) {
-            // Drag bittiğinde pozisyonu güncelle ve stroke kaldır
             d3.select(this).attr("stroke", null);
 
             const newX = event.x;
@@ -61,8 +62,9 @@ export const getVenueSvg = (
               Math.pow(newX - centerX, 2) + Math.pow(newY - centerY, 2)
             );
             console.log("Final radius:", finalRadius);
-            seatRadius = finalRadius;
-            d3.select(this).attr("radius", finalRadius);
+
+            // Pozisyonu güncelle
+            // d3.select(this).attr("radius", finalRadius);
 
             // Yeni açıyı hesapla
             const newAngle =
@@ -72,6 +74,8 @@ export const getVenueSvg = (
             const normalizedAngle = (newAngle + 360) % 360;
 
             console.log(`Seat ${seat.id} new angle:`, normalizedAngle);
+
+            const row = section.rows.find((r) => r.id === seat.rowId);
 
             // State güncelle
             setVenueData((prevVenueData) => {
@@ -91,11 +95,11 @@ export const getVenueSvg = (
                                 s.id === seat.id
                                   ? {
                                       ...s,
-                                      // x ve y koordinatlarını kaydet
+
                                       x: newX,
                                       y: newY,
-                                      angle: normalizedAngle, // sadece burada angle'ı güncelle
-                                      radius: finalRadius, // final radius'u state'e ekle
+                                      angle: normalizedAngle,
+                                      radius: finalRadius,
                                     }
                                   : s
                               ),
@@ -114,22 +118,15 @@ export const getVenueSvg = (
             });
           })
       );
-
-    seatGroup
-      .append("circle")
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("r", 15)
-      .attr("fill", "blue")
-      .attr("radius", seat?.radius);
-
-    // Koltuk ismi
-    seatGroup
-      .append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("dy", "0.35em")
-      .attr("text-anchor", "middle")
-      .text(seat.seatNumber);
+    createSvg({
+      svg: seatGroup,
+      centerX: 0,
+      centerY: 0,
+      radius: seat.radius, // örneğin 15px
+      color: color || "blue",
+      shape: "circle", // çember olarak ayarladık
+      text: seatNumber.toString(),
+      textColor: "white",
+    });
   });
 };

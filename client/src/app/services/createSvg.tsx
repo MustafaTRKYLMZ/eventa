@@ -3,37 +3,47 @@ import * as d3 from "d3";
 export type Svg = {
   centerX: number;
   centerY: number;
-  radius: number;
-  width: number;
-  height: number;
+  width?: number; // width artık opsiyonel
+  height?: number; // height de opsiyonel
   color: string;
   svgRef: React.RefObject<SVGSVGElement>;
-  text?: string;
+  text?: string | undefined | number;
   textColor?: string;
+  shape?: string;
+  radius?: number; // radius opsiyonel
+  svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
 };
 
 export const createSvg = ({
   centerX,
   centerY,
-  radius,
   width,
   height,
   color,
-  svgRef,
   text,
   textColor,
+  shape = "circle",
+  radius,
+  svg,
 }: Svg) => {
-  const svg = d3.select(svgRef.current);
+  if (shape === "circle" && radius) {
+    svg
+      .append("circle")
+      .attr("cx", centerX)
+      .attr("cy", centerY)
+      .attr("r", 15)
+      .attr("fill", color);
+  } else if (shape === "rect" && width && height) {
+    svg
+      .append("rect")
+      .attr("x", centerX - width / 2) // X konumunu merkeze göre ayarlıyoruz
+      .attr("y", centerY - height / 2) // Y konumunu merkeze göre ayarlıyoruz
+      .attr("width", width) // Genişlik
+      .attr("height", height) // Yükseklik
+      .attr("fill", color); // Rengi belirliyoruz
+  }
 
-  svg
-    .append("rect")
-    .attr("x", centerX - 100)
-    .attr("y", centerY - 50)
-    .attr("width", width)
-    .attr("height", height)
-    .attr("fill", color)
-    .attr("rx", radius);
-  //text
+  // Eğer metin varsa, onu da ekleyelim
   if (text || textColor) {
     svg
       .append("text")
@@ -44,5 +54,6 @@ export const createSvg = ({
       .attr("font-size", "12px")
       .text(text || "");
   }
+
   return svg;
 };

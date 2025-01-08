@@ -2,8 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { Venue } from "./types";
-import { getVenueSvg } from "./getVenueSvg";
+import { getSeatsSvg } from "../services/getSeatsSvg";
 import initialVenueData from "../data/initialVenueData.json";
+import { getRowsSvg } from "../services/getRowsSvg";
 
 export const DinamicVenueDesigner = () => {
   console.log("initialVenueData", initialVenueData[0]);
@@ -11,16 +12,27 @@ export const DinamicVenueDesigner = () => {
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
-    const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // SVG temizle
+  //   const getLocalData = () => {
+  //     const localVenue = localStorage.getItem("venueData");
+  //     if (localVenue) {
+  //       setVenueData(JSON.parse(localVenue));
+  //     }
+  //   };
 
-    const section = venueData.floors[0].sections[0];
-    const row = section.rows[0];
+  useEffect(() => {
+    // getLocalData();
+    const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
+
+    const section = venueData.floors[0].sections.map((section) => section);
+    const rows = section.flatMap((section) => section.rows);
+    const seats = rows.flatMap((row) => row.seats);
+
     const centerX = 250;
     const centerY = 250;
 
-    getVenueSvg(svg, section, row, centerX, centerY, setVenueData);
+    getRowsSvg(svg, section, rows, centerX, centerY, setVenueData);
+    getSeatsSvg(svg, section, seats, centerX, centerY, setVenueData);
   }, [venueData]);
 
   return (
@@ -34,7 +46,6 @@ export const DinamicVenueDesigner = () => {
       ></svg>
       <div>
         <h2>Current Venue Data</h2>
-        <pre>{JSON.stringify(venueData, null, 2)}</pre>
       </div>
     </div>
   );

@@ -41,6 +41,7 @@ export type Seat = {
   selectedSeatType: DraggableItem | null;
   selectedSeatPackage: number;
   rowId: string;
+  color: string;
 };
 export type Row = {
   id: string;
@@ -63,6 +64,8 @@ export type Row = {
   center: { x: number; y: number };
   seatsPerRow: number;
   seatRadius: number;
+  x?: number;
+  y?: number;
 };
 export type Section = {
   id: string;
