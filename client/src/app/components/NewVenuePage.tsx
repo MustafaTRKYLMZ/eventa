@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import availableItems from "../data/availableItems.json";
-import { DraggableItem, Seat, Section, Venue } from "./types";
+import { DraggableItem, Seat, Section, Venue } from "../types/types";
 import { AvailableItems } from "./AvailableItems";
 import { VenuePage } from "./VenuePage";
 import { Zoom } from "./Zoom";

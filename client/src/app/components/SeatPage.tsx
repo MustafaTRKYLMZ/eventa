@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { FaTrash } from "react-icons/fa";
-import { Seat, Section } from "./types";
+import { Seat, Section } from "../types/types";
 import { renderIcon } from "../utils/renderIcon";
 
 export type SeatProps = {
