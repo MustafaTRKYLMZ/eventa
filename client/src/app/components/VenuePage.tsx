@@ -1,7 +1,7 @@
 "use client";
 import { FC } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { DraggableItem, Seat, Section } from "./types";
+import { DraggableItem, Seat, Section } from "../types/types";
 import { SectionPage } from "./SectionPage";
 import { generateLetters } from "../utils/generateLetters";
 

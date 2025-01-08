@@ -1,7 +1,7 @@
 "use client";
 import { FC } from "react";
 import { AddSeatsSection } from "./AddSeatsSection";
-import { DraggableItem } from "./types";
+import { DraggableItem } from "../types/types";
 import { FaTrash } from "react-icons/fa";
 
 export type SectionFooterProps = {

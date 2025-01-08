@@ -1,6 +1,6 @@
 "use client";
 import { FC } from "react";
-import { DraggableItem } from "./types";
+import { DraggableItem } from "../types/types";
 
 export type AddSeatsSectionProps = {
   selectedSeatPackage: number;

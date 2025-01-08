@@ -5,6 +5,12 @@
 :root {
   --background: "linear-gradient(135deg, #1a202c, #2d3748)";
   --foreground: #171717;
+  --global-gradient: linear-gradient(
+    135deg,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+  --border-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,11 +19,24 @@
     --foreground: #ededed;
   }
 }
+.border-gradient {
+  border-bottom: 1px solid var(--border-color);
+}
 
+.shadow-gradient {
+  box-shadow: 0 2px 4px rgba(26, 32, 44, 0.4);
+}
+.bg-global-gradient {
+  background-image: var(--global-gradient);
+}
+html {
+  height: "100%";
+}
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  height: "100%";
 }
 
 .available-item {

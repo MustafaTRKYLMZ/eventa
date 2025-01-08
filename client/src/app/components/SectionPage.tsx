@@ -4,7 +4,7 @@ import { FaAngleUp, FaTrash } from "react-icons/fa";
 import { ReactSortable } from "react-sortablejs";
 import ControlBoothSVG from "./Svgs/ControlBoothSVG";
 import StageSVG from "./Svgs/StageSVG";
-import { DraggableItem, Seat, Section } from "./types";
+import { DraggableItem, Seat, Section } from "../types/types";
 import { SeatPage } from "./SeatPage";
 import StairsSVG from "./Svgs/StairsSVG";
 import { SectionFooter } from "./SectionFooter";

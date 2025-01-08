@@ -1,4 +1,4 @@
-import { Section } from "../components/types";
+import { Section } from "../types/types";
 
 export const generateLetters = (newItems: Section[]) => {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
